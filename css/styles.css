@@ -1,0 +1,172 @@
+.activity-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.activity-container-side {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(300px, 1fr));
+}
+
+.activity-item {
+  background-color: rgba(255, 255, 255, 0.8);
+/*  border: 1px solid rgba(0, 0, 0, 0.8);*/
+  padding: 10px;
+  font-size: 14px;
+  text-align: center;
+}
+
+
+.arleminfo{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 90%;
+    max-height: 40%;
+    width: auto;
+    height: auto;
+    text-align: left;
+}
+
+
+ /*Thumbnail and modal*/
+ 
+ .ImgThumbnail{
+    border: 1px solid #ccc;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 90%;
+    max-height: 70%;
+    min-width:90%;
+    min-height:70%;
+    width: auto;
+    height: auto;
+    object-fit: cover;
+}
+
+.ImgThumbnail:hover {
+    opacity: 0.7;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+
+ .ImgThumbnail-side{
+    border: 1px solid #ccc;
+    display: block;
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+
+#modal {
+  margin: auto;
+  display: none; /* Hidden by default */
+  position: absolute; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+  z-index: 1000; /* Sit on top */
+}
+
+
+
+#modalImg {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    width: auto;
+    border: 3px solid #fff;
+}
+
+
+
+.modalImage{
+    height: auto;
+    width: 100%;
+    border-top: 2px solid #fff;
+}
+
+#modalTitle {
+  text-align: center;
+  background-color: white;
+  color: black;
+  font-weight: bold;
+}
+
+
+
+
+@media 
+only screen and (min-width: 640px) and (max-width: 1024px) {
+
+        .activity-container {
+        grid-template-columns: repeat(2, minmax(200px, 1fr));
+      }
+        .ImgThumbnail, .no-thumbnail{
+           margin-left: 0;
+           margin-right: 0;
+            max-width: 70%;
+            max-height: 70%;
+            min-width:70%;
+            min-height:70%;
+       }     
+
+
+
+        #modalImg {
+            top: 0;
+            left: 0;
+            transform: translate(0%, 0%);
+        }
+        
+        
+        .modalImage{
+            height: auto;
+            width: 100%;
+        }
+}
+
+
+@media 
+only screen and (max-width: 640px) {
+
+        .activity-container {
+        grid-template-columns: repeat(1, minmax(300px, 1fr));
+      }
+      
+        .ImgThumbnail, .no-thumbnail{
+
+           margin-left: 0;
+           margin-right: 0;
+            max-width: 70%;
+            max-height: 70%;
+            min-width:70%;
+            min-height:70%;
+       }     
+       
+       
+         #modalImg {
+            top: 0;
+            left: 0;
+            transform: translate(0%, 0%);
+        }
+        
+        
+        .modalImage{
+            height: auto;
+            width: 100%;
+        }
+}
