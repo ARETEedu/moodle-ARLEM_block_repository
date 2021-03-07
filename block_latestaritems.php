@@ -40,7 +40,7 @@ class block_latestaritems extends block_base {
         $this->content->text = '<link rel="stylesheet" type="text/css" href="'. $CFG->wwwroot.'/blocks/latestaritems/css/styles.css' . '"></head>';
 
         
-        $arlems = $DB->get_records('arete_allarlems', null, 'timecreated DESC');
+        $arlems = getAllArlems();
         
         $top_ten = array_chunk($arlems, $this->number_of_items);
         
@@ -228,4 +228,28 @@ class block_latestaritems extends block_base {
 
         </script>';
     }
+    
+    
+    //get an array of all files in plug in filearea
+    function getAllArlems()
+    {
+    //    $fs = get_file_storage();
+    //
+    //    $files = $fs->get_area_files( 1 , get_string('component', 'arete'), get_string('filearea', 'arete'), false, 'timecreated DESC ', $emptyFiles);
+        global $DB,$USER, $COURSE;
+
+        //course context
+        $context = context_course::instance($COURSE->id);
+
+        //manager
+        if(has_capability('mod/arete:manageall', $context)){
+                $files = $DB->get_records('arete_allarlems' , null, 'timecreated DESC'); //all arlems
+        }else //others
+        {
+               $files = $DB->get_records_select('arete_allarlems', 'upublic = 1 OR userid = ' . $USER->id  , null, 'timecreated DESC');  //only public and for the user
+        }
+
+        return $files;  
+    }
+
 }
