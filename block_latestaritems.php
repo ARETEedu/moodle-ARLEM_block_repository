@@ -40,7 +40,7 @@ class block_latestaritems extends block_base {
         $this->content->text = '<link rel="stylesheet" type="text/css" href="'. $CFG->wwwroot.'/blocks/latestaritems/css/styles.css' . '"></head>';
 
         
-        $arlems = getAllArlems();
+        $arlems = $this->getAllArlems();
         
         $top_ten = array_chunk($arlems, $this->number_of_items);
         
@@ -56,8 +56,6 @@ class block_latestaritems extends block_base {
             $thumb_css = 'ImgThumbnail';
         }
 
-        //the popup modal div
-        $this->content->text .= $this->add_popup_image_div();
         
         
         $this->content->text .= html_writer::start_tag('div' ,array( 'class' => $container_css));
@@ -78,8 +76,10 @@ class block_latestaritems extends block_base {
                      $thumb_url= $CFG->wwwroot.'/blocks/latestaritems/pix/no-thumbnail.jpg';
                  }
 
+                 $url = $CFG->wwwroot. '/mod/arete/filedetail.php?itemid=' . $activity->itemid ;
+                 $this->content->text .= html_writer::start_tag('a', array('href' => $url));
                  $this->content->text .= html_writer::empty_tag('img', array('class' => $thumb_css , 'src' => $thumb_url, 'alt' => pathinfo($activity->filename, PATHINFO_FILENAME)));
-                 
+                  $this->content->text .= html_writer::end_tag('a');
                  $this->content->text .= html_writer::start_tag('div' ,array( 'class' => 'arleminfo' ));
                     $this->content->text .= '<b>' . get_string('arlemtitle', 'block_latestaritems') . ': </b>' . pathinfo($activity->filename, PATHINFO_FILENAME);
                     $this->content->text .= '<br><b>' . get_string('arlemdate', 'block_latestaritems') . ': </b>' . date('m.d.Y H:i ', $activity->timecreated);
@@ -91,8 +91,6 @@ class block_latestaritems extends block_base {
         
         $this->content->text .= html_writer::end_tag('div');
         
-
-        $this->content->footer = $this->printConfirmationJS($thumb_css); 
                 
         if (! empty($this->config->text)) {
         $this->content->text = $this->config->text;
@@ -171,64 +169,7 @@ class block_latestaritems extends block_base {
         
         return $size;
     }
-    
-    
-    /*
-    * Add the needed div for showing pop up images when click on thumbnails
 
-    */
-   function add_popup_image_div(){
-
-           $popup  = html_writer::start_tag('div', array( 'id' => 'modal' ));
-               $popup  .= html_writer::start_tag('span', array('id' => 'modalImg'));
-                   $popup  .= html_writer::start_tag('div',array('id' => 'modalTitle'));
-                   $popup  .= html_writer::end_tag('div');
-                   $popup  .= html_writer::empty_tag('img', array( 'class' => 'modalImage'));
-               $popup  .= html_writer::end_tag('span');
-           $popup  .= html_writer::end_tag('div');
-
-           return $popup;
-   }
-   
-   
-    function printConfirmationJS($thumb_css ){
-
-     //pop up only if it is not side block
-    if($thumb_css == 'ImgThumbnail-side'){
-        return '';
-    }   
-    
-    
-    return '<script>
-        var modalEle = document.querySelector("#modal");
-        var modalImage = document.querySelector(".modalImage");
-        var modalTitle = document.querySelector("#modalTitle");
-        Array.from(document.querySelectorAll(".'. $thumb_css .'")).forEach(item => {
-           item.addEventListener("click", event => {
-
-            const pathArray = event.target.src.split("/");
-            const lastIndex = pathArray.length - 1;
-
-            //dont show no-thumbnail
-            if(pathArray[lastIndex] != "no-thumbnail.jpg"){
-                 modalEle.style.display = "block";
-                 modalImage.src = event.target.src;
-                 modalTitle.innerHTML = event.target.alt;
-            }
-
-           });
-        });
-        document.querySelector("#modalImg").addEventListener("click", () => {
-           modalEle.style.display = "none";
-        });
-
-        document.querySelector("#modal").addEventListener("click", () => {
-           modalEle.style.display = "none";
-        });
-
-        </script>';
-    }
-    
     
     //get an array of all files in plug in filearea
     function getAllArlems()
