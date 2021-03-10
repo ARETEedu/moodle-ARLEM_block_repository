@@ -7,7 +7,7 @@ defined('MOODLE_INTERNAL') || die();
 
 class block_latestaritems extends block_base {
     
-    var $number_of_items = 9; //the lataset x activities will be shown
+    var $default_number_of_items = 9; //the lataset x activities will be shown
     
     
     public function init() {
@@ -25,7 +25,7 @@ class block_latestaritems extends block_base {
      * 
      */
     public function get_content() {
-        global $DB,$CFG;
+        global $DB,$CFG,$default_number_of_items;
         
         if ($this->content !== null) {
           return $this->content;
@@ -42,7 +42,8 @@ class block_latestaritems extends block_base {
         
         $arlems = $this->getAllArlems();
         
-        $top_ten = array_chunk($arlems, $this->number_of_items);
+
+        $top_ten = array_chunk($arlems, $this->config->numberofitem);
         
         $counter = 0;
         
@@ -95,7 +96,12 @@ class block_latestaritems extends block_base {
         if (! empty($this->config->text)) {
         $this->content->text = $this->config->text;
         }
+        
+        if(empty($this->config->numberofitem)){
+           $this->content->text = 'Please configure this block using the edit icon.';
+        }
 
+        
 
         return $this->content;
     }
@@ -134,7 +140,7 @@ class block_latestaritems extends block_base {
     
     ///allow to add multiple blocks of this type to a single course "false means not allow"
     public function instance_allow_multiple() {
-        return false;
+        return true;
     }
     
     
