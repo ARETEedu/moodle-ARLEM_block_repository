@@ -70,6 +70,7 @@ class block_latestaritems extends block_base {
             
                 $thumbnail = $fs->get_file(context_system::instance()->id, get_string('component', 'arete'), 'thumbnail', $activity->itemid, '/', 'thumbnail.jpg');
 
+
                  //if the thumbnail file exists
                  if($thumbnail){
                     $thumb_url = moodle_url::make_pluginfile_url($thumbnail->get_contextid(), $thumbnail->get_component(), $thumbnail->get_filearea(), $thumbnail->get_itemid(), $thumbnail->get_filepath(), $thumbnail->get_filename(), false);
@@ -77,10 +78,15 @@ class block_latestaritems extends block_base {
                      $thumb_url= $CFG->wwwroot.'/blocks/latestaritems/pix/no-thumbnail.jpg';
                  }
 
+                         
                  $url = $CFG->wwwroot. '/mod/arete/filedetail.php?itemid=' . $activity->itemid ;
                  $this->content->text .= html_writer::start_tag('a', array('href' => $url));
-                 $this->content->text .= html_writer::empty_tag('img', array('class' => $thumb_css , 'src' => $thumb_url, 'alt' => pathinfo($activity->filename, PATHINFO_FILENAME)));
-                  $this->content->text .= html_writer::end_tag('a');
+                 
+                 $this->content->text .= html_writer::start_tag('div' ,array( 'class' => 'thumbnail-container' ));
+                    $this->content->text .= html_writer::empty_tag('img', array('class' => $thumb_css , 'src' => $thumb_url, 'alt' => pathinfo($activity->filename, PATHINFO_FILENAME)));
+                 $this->content->text .= html_writer::end_tag('div');
+                 
+                 $this->content->text .= html_writer::end_tag('a');
                  $this->content->text .= html_writer::start_tag('div' ,array( 'class' => 'arleminfo' ));
                     $this->content->text .= '<b>' . get_string('arlemtitle', 'block_latestaritems') . ': </b>' . pathinfo($activity->filename, PATHINFO_FILENAME);
                     $this->content->text .= '<br><b>' . get_string('arlemdate', 'block_latestaritems') . ': </b>' . date('m.d.Y H:i ', $activity->timecreated);
