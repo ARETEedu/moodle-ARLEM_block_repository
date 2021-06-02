@@ -12,6 +12,8 @@ class block_latestaritems extends block_base {
     
     public function init() {
         $this->title = get_string('pluginname', 'block_latestaritems');
+        
+        
     }
 
     function applicable_formats() {
@@ -27,6 +29,8 @@ class block_latestaritems extends block_base {
     public function get_content() {
         global $DB,$CFG,$default_number_of_items;
         
+
+        
         if ($this->content !== null) {
           return $this->content;
         }
@@ -39,6 +43,12 @@ class block_latestaritems extends block_base {
         //import css file
         $this->content->text = '<link rel="stylesheet" type="text/css" href="'. $CFG->wwwroot.'/blocks/latestaritems/css/styles.css' . '"></head>';
 
+        $dbman = $DB->get_manager();
+        if (!$dbman->table_exists('arete')) {
+            $this->content->text = "Arete plugin is not found!";
+            return $this->content;
+        }
+        
         
         $arlems = $this->getAllArlems();
         
@@ -61,6 +71,7 @@ class block_latestaritems extends block_base {
         
         $this->content->text .= html_writer::start_tag('div' ,array( 'class' => $container_css));
         
+
         //create the cells
         foreach ($top_ten[0] as $activity) {
             
